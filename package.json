@@ -6,7 +6,9 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "test:e2e:build": "detox build ios.sim.debug",
-    "test:e2e:ios": "detox test -c ios.sim.debug"
+    "e2e:ios:7": "detox test -c ios.sim.debug -n 'iPhone 7'",
+    "e2e:ios:X": "detox test -c ios.sim.debug -n 'iPhone X'",
+    "e2e": "yarn e2e:ios:7 & yarn e2e:ios:X"
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
@@ -25,6 +27,7 @@
   },
   "detox": {
     "test-runner": "jest",
+    "runner-config": "e2e/config.json",
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/mydetox.app",
