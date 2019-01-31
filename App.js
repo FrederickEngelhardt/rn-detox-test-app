@@ -6,24 +6,52 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from "react";
+import {
+  Dimensions,
+  Platform,
+  Button,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import Buttons from "./src/components/Buttons";
+import Inputs from "./src/components/Inputs";
+import Images from "./src/components/Images";
+import Navigation from "./src/components/Navigation";
+
+import { buttonProps } from "./testProps";
+
+const { height: HEIGHT, width: WIDTH } = Dimensions.get("screen");
 
 type Props = {};
 export default class App extends Component<Props> {
+  static defaultProps = {
+    pages: ["Buttons", "Inputs", "Images"]
+  };
+
+  state = {
+    focus: ''
+  };
+
   render() {
+    const { pages } = this.props;
+    const { focus } = this.state;
     return (
-      <View testID={'welcome'} style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+      <View testID={"welcome"} style={styles.container}>
+        <Navigation goBack={() => this.setState({focus: ''})}/>
+        {pages.map(pageId => (
+          focus === '' && <Button
+            key={pageId}
+            onPress={() => this.setState({ focus: pageId })}
+            title={`Show ${pageId}`}
+          />
+        ))}
+
+        {focus === "Buttons" && <Buttons {...buttonProps} />}
+        {focus === "Inputs" && <Inputs />}
+        {focus === "Images" && <Images />}
       </View>
     );
   }
@@ -32,18 +60,20 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#6dbf53"
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    textAlign: "center",
+    margin: 10
   },
   instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    textAlign: "center",
+    color: "#333333",
+    marginBottom: 5
+  }
 });
