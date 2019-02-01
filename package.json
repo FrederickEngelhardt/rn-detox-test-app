@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "process && process.env && process.env.MY_VARIABLE || 'value assigned to variable in dotenv' node node_modules/react-native/local-cli/cli.js start",
+    "start:test": "yarn start",
     "test": "jest",
     "test:e2e:build": "detox build ios.sim.debug",
     "e2e:ios:7": "detox test -c ios.sim.debug -n 'iPhone 7'",
@@ -13,18 +14,23 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
+    "babel-plugin-inline-dotenv": "^1.2.1",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "react": "16.5.0",
     "react-jsx-parser": "^1.13.0",
     "react-native": "0.57.0"
   },
   "devDependencies": {
     "babel-jest": "24.0.0",
+    "babel-preset-react-native": "^4.0.1",
+    "cavy": "^0.6.1",
     "detox": "^10.0.5",
     "eslint": "^5.12.1",
     "jest": "24.0.0",
     "metro-react-native-babel-preset": "0.51.1",
     "prettier": "^1.16.3",
     "pretty-quick": "^1.10.0",
+    "react-native-dotenv": "^0.2.0",
     "react-test-renderer": "16.5.0"
   },
   "jest": {

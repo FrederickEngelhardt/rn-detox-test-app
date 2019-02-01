@@ -7,6 +7,7 @@
  */
 
 import React, { Component } from "react";
+import { hook } from "cavy";
 import {
   Dimensions,
   Platform,
@@ -26,13 +27,13 @@ import { buttonProps } from "./testProps";
 const { height: HEIGHT, width: WIDTH } = Dimensions.get("screen");
 
 type Props = {};
-export default class App extends Component<Props> {
+class App extends Component<Props> {
   static defaultProps = {
     pages: ["Buttons", "Inputs", "Images"]
   };
 
   state = {
-    focus: ''
+    focus: ""
   };
 
   render() {
@@ -40,14 +41,18 @@ export default class App extends Component<Props> {
     const { focus } = this.state;
     return (
       <View testID={"welcome"} style={styles.container}>
-        <Navigation goBack={() => this.setState({focus: ''})}/>
-        {pages.map(pageId => (
-          focus === '' && <Button
-            key={pageId}
-            onPress={() => this.setState({ focus: pageId })}
-            title={`Show ${pageId}`}
-          />
-        ))}
+        <Navigation goBack={() => this.setState({ focus: "" })} />
+        {pages.map(
+          pageId =>
+            focus === "" && (
+              <Button
+								ref={this.props.generateTestHook('App.Button')}
+                key={pageId}
+                onPress={() => this.setState({ focus: pageId })}
+                title={`Show ${pageId}`}
+              />
+            )
+        )}
 
         {focus === "Buttons" && <Buttons {...buttonProps} />}
         {focus === "Inputs" && <Inputs />}
@@ -56,6 +61,9 @@ export default class App extends Component<Props> {
     );
   }
 }
+
+const TestableApp = hook(App);
+export default TestableApp;
 
 const styles = StyleSheet.create({
   container: {
