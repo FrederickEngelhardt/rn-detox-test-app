@@ -16,7 +16,7 @@ import Navigation from './src/components/Navigation';
 
 import testProps from './testProps';
 
-type ComponentListType = 'ButtonScreen' | 'InputScreen'
+type ComponentListType = 'ButtonScreen' | 'InputScreen';
 
 const componentList = (id: ComponentListType) =>
   ({
@@ -53,24 +53,35 @@ class App extends Component<Props> {
     const { pages } = this.props;
     const { focus } = this.state;
     return (
-      <View testID={'welcome'} style={styles.container}>
-        <Navigation goBack={() => this.setState({ focus: '' })} />
-        {focus === '' &&
-          pages.map((pageId: string) => (
-            <TouchableOpacity
-              style={styles.button}
-              ref={this.props.generateTestHook('App.Button')}
-              key={pageId}
-              onPress={() => this.setState({ focus: pageId })}
-            >
-              <Text>Show {pageId}</Text>
-            </TouchableOpacity>
-          ))}
+      <View testID={'AppScreen'} style={styles.container}>
+        <Navigation
+          inputID={'Navigation'}
+          goBack={() => this.setState({ focus: '' })}
+        />
+        <View testID={'HomeScreen'}>
+          {focus === '' &&
+            pages.map((pageId: string) => (
+              <TouchableOpacity
+                // @ts-ignore
+                testID={`GoTo${pageId}`}
+                style={styles.button}
+                ref={this.props.generateTestHook('HomeScreen.Button')}
+                key={pageId}
+                onPress={() => this.setState({ focus: pageId })}
+              >
+                <Text>Show {pageId}</Text>
+              </TouchableOpacity>
+            ))}
+        </View>
 
         {pages.map((screen: ComponentListType) => {
           const Component: any = componentList(screen);
           const props = this.props[screen];
-          return focus === screen && <Component key={screen} {...props} />;
+          return (
+            focus === screen && (
+              <Component key={screen} {...props} testID={focus} />
+            )
+          );
         })}
       </View>
     );

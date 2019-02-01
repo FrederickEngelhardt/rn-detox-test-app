@@ -6,8 +6,8 @@ const pages = [ 'ButtonScreen', 'InputScreen']
 
 const InputScreen = {
 	fields: [
-	  {key: 'username', label: 'User Name'},
-    {key: 'password', label: 'Password'},
+	  {id: 'username', label: 'User Name'},
+    {id: 'password', label: 'Password'},
   ]
 }
 

@@ -13,20 +13,21 @@ import {
 type FieldKeys = ['username', 'password'];
 
 type Field = {
-  key: FieldKeys[any];
+  id: FieldKeys[any];
   label: string;
 };
 
 type Props = {
   fields: Array<Field>;
+  testID: string;
 };
 
 const { width: WIDTH } = Dimensions.get('screen');
 
-const mockApi = () => new Promise((resolve: true) => setTimeout(resolve, 2500));
+const mockApi = () => new Promise((resolve: any) => setTimeout(resolve, 2500));
 
-type PromiseInputType = Promise<any>
-type PromiseReturnType = {promise: any, cancel: () => void}
+type PromiseInputType = Promise<any>;
+type PromiseReturnType = { promise: any; cancel: () => void };
 const promiseCancelWrapper = (promise: PromiseInputType): PromiseReturnType => {
   let hasCanceled_ = false;
 
@@ -46,7 +47,7 @@ const promiseCancelWrapper = (promise: PromiseInputType): PromiseReturnType => {
 };
 
 class Buttons extends React.PureComponent<Props> {
-  requestApi: {promise: any, cancel: () => void} | undefined;
+  requestApi: { promise: any; cancel: () => void } | undefined;
 
   state = {
     username: '',
@@ -70,30 +71,33 @@ class Buttons extends React.PureComponent<Props> {
     // Avoid anti pattern isMounted() check
     this.requestApi.promise
       .then(() => this.setState({ isLoggedIn: true, isRequesting: false }))
-      .catch(reason => console.log('isCanceled', reason.isCanceled));
-    this.requestApi.cancel()
+      .catch((reason: { isCanceled: any }) =>
+        console.log('isCanceled', reason.isCanceled)
+      );
   };
 
   render() {
-    const { fields } = this.props;
+    const { fields, testID } = this.props;
     const { isLoggedIn, isRequesting } = this.state;
     return (
-      <View style={styles.container}>
+      <View testID={testID} style={styles.container}>
         {fields.map(field => (
-          <React.Fragment key={field.key}>
+          <React.Fragment key={field.id}>
             <View style={styles.labelFieldContainer}>
               <Text style={styles.labelField}>{field.label}</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
-                onChangeText={text => this.setState({ [field.key]: text })}
-                secureTextEntry={field.key === 'password'}
+                testID={field.id}
+                onChangeText={text => this.setState({ [field.id]: text })}
+                secureTextEntry={field.id === 'password'}
                 maxLength={15}
                 style={styles.inputField}
-                value={this.state[field.key]}
+                value={this.state[field.id]}
               />
               <TouchableOpacity
-                onPress={() => this.setState({ [field.key]: '' })}
+                testID={`${field.id}Clear`}
+                onPress={() => this.setState({ [field.id]: '' })}
                 style={styles.reset}
               >
                 <Text style={styles.resetText}>X</Text>
@@ -103,6 +107,7 @@ class Buttons extends React.PureComponent<Props> {
         ))}
         {!isRequesting ? (
           <TouchableHighlight
+            testID={'LoginButton'}
             onPress={this.handleLogin}
             style={styles.loginButton}
             underlayColor={'white'}
@@ -112,11 +117,9 @@ class Buttons extends React.PureComponent<Props> {
             </Text>
           </TouchableHighlight>
         ) : (
-          <ActivityIndicator
-            style={styles.loader}
-            size="large"
-            color="#fffff"
-          />
+          <View testID={'Loader'} style={styles.loader}>
+            <ActivityIndicator size="large" color="#fffff" />
+          </View>
         )}
       </View>
     );

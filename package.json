@@ -3,17 +3,20 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "e2e:ios:7": "detox test -c ios.sim.debug -n 'iPhone 7'",
-    "e2e:ios:X": "detox test -c ios.sim.debug -n 'iPhone X'",
+    "detox:build": "detox build ios.sim.debug",
+    "detox:run": "yarn env:default && detox test ios.sim.debug -n 'iPhone X'",
+    "ios:7": "yarn detox:run -n 'iPhone 7'",
+    "ios:X": "yarn detox:run -n 'iPhone X'",
+    "detox:multi": "yarn ios:7 & yarn ios:X",
     "e2e": "yarn env:e2e:testing && yarn e2e:ios:7 & yarn e2e:ios:X",
     "env:default": "echo \"$(cat ./envConfig/.env.default)\" > .env",
     "env:e2e:cavy": "echo \"$(cat ./envConfig/.env.testing)\" > .env",
     "env:production": "echo \"$(cat ./envConfig/.env.default)\" > .env",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:default": "yarn env:default && yarn start",
-    "start:cavy": "yarn env:e2e:cavy && yarn start",
+    "test:e2e:cavy": "yarn env:e2e:cavy && yarn start",
     "test": "jest",
-    "test:e2e:build": "detox build ios.sim.debug",
+    "test:e2e:detox": "yarn detox:build && yarn detox:run",
     "lint": "tslint -p . -c tslint.json",
     "prettier": "prettier --write"
   },
@@ -76,7 +79,7 @@
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/mydetox.app",
         "build": "xcodebuild -project ios/mydetox.xcodeproj -scheme mydetox -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
-        "name": "iPhone 7"
+        "name": "iPhone X"
       }
     }
   }

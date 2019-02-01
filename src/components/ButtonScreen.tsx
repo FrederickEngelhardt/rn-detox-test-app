@@ -16,6 +16,7 @@ type ButtonAnimationArrayType = Array<Animated.Value>;
 
 type Props = {
   buttonsArray: ButtonArrayType;
+  testID: string,
 };
 
 class ButtonScreen extends React.PureComponent<Props> {
@@ -45,13 +46,14 @@ class ButtonScreen extends React.PureComponent<Props> {
     ]).start();
 
   render() {
+    const { buttonsArray, testID } = this.props;
     return (
-      <View style={styles.container}>
-        {this.props.buttonsArray.map((button: number, index: number) => (
-          // @ts-ignore (DETOX input makes this type fail)
+      <View testID={testID} style={styles.container}>
+        {buttonsArray.map((button: number, index: number) => (
           <TouchableOpacity
-            inputID={button as number}
-            key={`${button}`}
+            // @ts-ignore (DETOX input makes this type fail)
+            testID={`Item${button}`}
+            key={button}
             style={styles.wrapper}
             onPress={() => this.bounceAnimation(index)}
           >

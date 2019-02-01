@@ -3,7 +3,7 @@ export default function(spec) {
 	spec.describe('HomeScreen', function() {
 
 		spec.it('Shows activity buttons', async function() {
-			await spec.exists('App.Button');
+			await spec.exists('HomeScreen.Button');
 			// await spec.fillIn('SearchBar.TextInput', 'Amy');
 			// await spec.notExists('EmployeeList.JimCavy');
 			// await spec.exists('EmployeeList.AmyTaylor');
