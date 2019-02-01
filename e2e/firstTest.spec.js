@@ -41,7 +41,7 @@ describe('ButtonScreen', () => {
 });
 
 describe('InputScreen', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await device.reloadReactNative();
     await element(by.id('GoToInputScreen')).tap();
   });
@@ -63,7 +63,7 @@ describe('InputScreen', () => {
   });
 
   it('It can type in the Password field', async () => {
-    await element(by.id('password')).typeText('MortyS@cks!');
+    await element(by.id('password')).typeText('Morty!');
   });
 
   it('It can click Login and Loader renders', async () => {
@@ -72,14 +72,16 @@ describe('InputScreen', () => {
   });
 
   it('It can type and clear both the TextFields', async () => {
-    await device.reloadReactNative();
-    await element(by.id('GoToInputScreen')).tap();
+    // await device.reloadReactNative();
+    // await element(by.id('GoToInputScreen')).tap();
 
     const username = 'Rick *Burp*';
     const password = '*Burp*';
+    await element(by.id('username')).clearText();
     await element(by.id('username')).typeText(username);
     await expect(element(by.id('username'))).toHaveText(username);
 
+    await element(by.id('password')).clearText();
     await element(by.id('password')).typeText(password);
     await expect(element(by.id('password'))).toHaveText(password);
 
@@ -98,7 +100,7 @@ describe('Navigation', () => {
   });
 
   it('it can navigate back to the homescreen', async () => {
-    await element(by.id('navigateBack')).tap()
+    await element(by.id('NavigateBack')).tap()
     await expect(element(by.id('HomeScreen'))).toBeVisible();
   });
 
@@ -106,7 +108,7 @@ describe('Navigation', () => {
     await device.reloadReactNative();
     await element(by.id('GoToInputScreen')).tap();
 
-    await element(by.id('navigateBack')).tap()
+    await element(by.id('NavigateBack')).tap()
     await expect(element(by.id('HomeScreen'))).toBeVisible();
   });
 });
