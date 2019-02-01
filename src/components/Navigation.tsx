@@ -9,7 +9,11 @@ import {
 
 const { height: HEIGHT, width: WIDTH } = Dimensions.get("screen");
 
-function Navigation(props) {
+type Props = {
+  goBack: () => void
+}
+
+function Navigation(props: Props) {
   return (
     <View style={style.wrapper}>
       <TouchableOpacity style={style.button} onPress={() => props.goBack()}>

@@ -7,13 +7,14 @@
     "e2e:ios:X": "detox test -c ios.sim.debug -n 'iPhone X'",
     "e2e": "yarn env:e2e:testing && yarn e2e:ios:7 & yarn e2e:ios:X",
     "env:default": "echo \"$(cat ./envConfig/.env.default)\" > .env",
-    "env:e2e:testing": "echo \"$(cat ./envConfig/.env.testing)\" > .env",
+    "env:e2e:cavy": "echo \"$(cat ./envConfig/.env.testing)\" > .env",
     "env:production": "echo \"$(cat ./envConfig/.env.default)\" > .env",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "start:default": "yarn env:default && yarn start:script",
-    "start:test": "yarn env:e2e: && yarn start",
+    "start:default": "yarn env:default && yarn start",
+    "start:cavy": "yarn env:e2e:cavy && yarn start",
     "test": "jest",
     "test:e2e:build": "detox build ios.sim.debug",
+    "lint": "tslint -p . -c tslint.json",
     "prettier": "prettier --write"
   },
   "dependencies": {
@@ -25,6 +26,11 @@
     "react-native": "0.57.0"
   },
   "devDependencies": {
+    "@types/detox": "^9.0.3",
+    "@types/jest": "^23.3.13",
+    "@types/react": "^16.7.22",
+    "@types/react-native": "^0.57.32",
+    "@types/react-test-renderer": "^16.0.3",
     "babel-jest": "24.0.0",
     "babel-preset-react-native": "^4.0.1",
     "cavy": "^0.6.1",
@@ -35,10 +41,32 @@
     "prettier": "^1.16.3",
     "pretty-quick": "^1.10.0",
     "react-native-dotenv": "^0.2.0",
-    "react-test-renderer": "16.5.0"
+    "react-native-typescript-transformer": "^1.2.11",
+    "react-test-renderer": "16.5.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.3.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testPathIgnorePatterns": [
+      "\\.snap$",
+      "<rootDir>/node_modules/"
+    ],
+    "cacheDirectory": ".jest/cache"
   },
   "detox": {
     "test-runner": "jest",
