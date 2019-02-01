@@ -3,13 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "process && process.env && process.env.MY_VARIABLE || 'value assigned to variable in dotenv' node node_modules/react-native/local-cli/cli.js start",
-    "start:test": "yarn start",
-    "test": "jest",
-    "test:e2e:build": "detox build ios.sim.debug",
     "e2e:ios:7": "detox test -c ios.sim.debug -n 'iPhone 7'",
     "e2e:ios:X": "detox test -c ios.sim.debug -n 'iPhone X'",
-    "e2e": "yarn e2e:ios:7 & yarn e2e:ios:X",
+    "e2e": "yarn env:e2e:testing && yarn e2e:ios:7 & yarn e2e:ios:X",
+    "env:default": "echo \"$(cat ./envConfig/.env.default)\" > .env",
+    "env:e2e:testing": "echo \"$(cat ./envConfig/.env.testing)\" > .env",
+    "env:production": "echo \"$(cat ./envConfig/.env.default)\" > .env",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start:default": "yarn env:default && yarn start:script",
+    "start:test": "yarn env:e2e: && yarn start",
+    "test": "jest",
+    "test:e2e:build": "detox build ios.sim.debug",
     "prettier": "prettier --write"
   },
   "dependencies": {
