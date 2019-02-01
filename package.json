@@ -24,6 +24,7 @@
     "@babel/runtime": "^7.3.1",
     "babel-plugin-inline-dotenv": "^1.2.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "detox": "^10.0.5",
     "react": "16.5.0",
     "react-jsx-parser": "^1.13.0",
     "react-native": "0.57.0"
@@ -37,7 +38,6 @@
     "babel-jest": "24.0.0",
     "babel-preset-react-native": "^4.0.1",
     "cavy": "^0.6.1",
-    "detox": "^10.0.5",
     "eslint": "^5.12.1",
     "jest": "24.0.0",
     "metro-react-native-babel-preset": "0.51.1",
