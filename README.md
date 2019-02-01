@@ -4,6 +4,10 @@
 
 Follow detox's tutorial [here](https://github.com/wix/Detox/blob/master/docs/Introduction.GettingStarted.md)
 
+#### E2E Frameworks
+- Detox
+- Cavy -> (1 test)
+
 #### iOS
 - Full support for all built in simulators.
 - Can run multiple simulators at once.
