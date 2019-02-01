@@ -80,6 +80,12 @@
         "build": "xcodebuild -project ios/mydetox.xcodeproj -scheme mydetox -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "name": "iPhone X"
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/mydetox.app",
+        "build": "xcodebuild -project ios/mydetox.xcodeproj -scheme mydetox -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet",
+        "type": "ios.simulator",
+        "name": "iPhone X"
       }
     }
   }
