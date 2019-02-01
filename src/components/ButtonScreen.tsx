@@ -58,7 +58,7 @@ class ButtonScreen extends React.PureComponent<Props> {
             <Animated.View
               style={[stylesAnimation(this.buttonAnimationArray[index]).button]}
             >
-              <Text style={styles.text}>blah{button}</Text>
+              <Text style={styles.text}>Item {button}</Text>
             </Animated.View>
           </TouchableOpacity>
         ))}

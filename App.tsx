@@ -96,6 +96,6 @@ const styles: Style = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#6dbf53'
+    backgroundColor: 'rgba(88,88,88, 1)'
   }
 });

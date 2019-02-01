@@ -2,13 +2,16 @@
 
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import { Tester, TestHookStore } from 'cavy';
 
+// @ts-ignore
+import { Tester, TestHookStore } from 'cavy';
+// @ts-ignore
+import { E2E_TESTING } from 'react-native-dotenv';
+// @ts-ignore
 import AppSpec from './specs/test';
+// @ts-ignore
 import { name as appName } from './app.json';
 import App from './App';
-
-import { E2E_TESTING } from 'react-native-dotenv';
 
 const testHookStore = new TestHookStore();
 

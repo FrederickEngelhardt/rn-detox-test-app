@@ -1,44 +1,122 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   TextInput,
   Text,
   StyleSheet,
-  View
+  View,
+  Dimensions,
+  TouchableOpacity,
+  TouchableHighlight
 } from 'react-native';
 
-type FieldKeys = ['username', 'password']
+type FieldKeys = ['username', 'password'];
 
 type Field = {
-  key: FieldKeys[any],
-  label: string,
-}
+  key: FieldKeys[any];
+  label: string;
+};
 
 type Props = {
-  fields: Array<Field>
-}
+  fields: Array<Field>;
+};
+
+const { width: WIDTH } = Dimensions.get('screen');
+
+const mockApi = () => new Promise((resolve: true) => setTimeout(resolve, 2500));
+
+type PromiseInputType = Promise<any>
+type PromiseReturnType = {promise: any, cancel: () => void}
+const promiseCancelWrapper = (promise: PromiseInputType): PromiseReturnType => {
+  let hasCanceled_ = false;
+
+  const wrappedPromise = new Promise((resolve, reject) => {
+    promise.then(
+      val => (hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)),
+      error => (hasCanceled_ ? reject({ isCanceled: true }) : reject(error))
+    );
+  });
+
+  return {
+    promise: wrappedPromise,
+    cancel() {
+      hasCanceled_ = true;
+    }
+  };
+};
 
 class Buttons extends React.PureComponent<Props> {
+  requestApi: {promise: any, cancel: () => void} | undefined;
+
   state = {
     username: '',
-    password: ''
+    password: '',
+    isLoggedIn: false,
+    isRequesting: false
+  };
+
+  componentWillUnmount() {
+    if (this.requestApi) this.requestApi.cancel(); // Cancel the promise
+  }
+
+  handleLogin = async () => {
+    const { isRequesting } = this.state;
+
+    if (isRequesting === true) return;
+    this.requestApi = promiseCancelWrapper(mockApi());
+
+    this.setState({ isRequesting: true });
+
+    // Avoid anti pattern isMounted() check
+    this.requestApi.promise
+      .then(() => this.setState({ isLoggedIn: true, isRequesting: false }))
+      .catch(reason => console.log('isCanceled', reason.isCanceled));
+    this.requestApi.cancel()
   };
 
   render() {
-    const { fields } = this.props
+    const { fields } = this.props;
+    const { isLoggedIn, isRequesting } = this.state;
     return (
       <View style={styles.container}>
-
-        { fields.map((field) => (
-            <React.Fragment key={field.key}>
+        {fields.map(field => (
+          <React.Fragment key={field.key}>
+            <View style={styles.labelFieldContainer}>
               <Text style={styles.labelField}>{field.label}</Text>
+            </View>
+            <View style={styles.inputContainer}>
               <TextInput
-                onChangeText={(text) => this.setState({ [field.key]: text})}
+                onChangeText={text => this.setState({ [field.key]: text })}
                 secureTextEntry={field.key === 'password'}
+                maxLength={15}
                 style={styles.inputField}
                 value={this.state[field.key]}
               />
-            </React.Fragment>
-          )
+              <TouchableOpacity
+                onPress={() => this.setState({ [field.key]: '' })}
+                style={styles.reset}
+              >
+                <Text style={styles.resetText}>X</Text>
+              </TouchableOpacity>
+            </View>
+          </React.Fragment>
+        ))}
+        {!isRequesting ? (
+          <TouchableHighlight
+            onPress={this.handleLogin}
+            style={styles.loginButton}
+            underlayColor={'white'}
+          >
+            <Text style={styles.labelField}>
+              {isLoggedIn ? 'Sign out' : 'Login'}
+            </Text>
+          </TouchableHighlight>
+        ) : (
+          <ActivityIndicator
+            style={styles.loader}
+            size="large"
+            color="#fffff"
+          />
         )}
       </View>
     );
@@ -47,28 +125,67 @@ class Buttons extends React.PureComponent<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
     flexWrap: 'wrap'
   },
-  wrapper: {
-    flexShrink: 1
+
+  loader: {
+    width: 100,
+    height: 100
+  },
+
+  loginButton: {
+    margin: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgb(40, 40, 40)',
+    width: WIDTH * 0.4,
+    height: 40,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5
+  },
+
+  labelFieldContainer: {
+    marginTop: 15,
+    padding: 10,
+    width: WIDTH * 0.95,
+    backgroundColor: 'rgba(40,40,40, 1)',
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5
   },
 
   labelField: {
-    flexGrow: 1,
-    flexBasis: 25,
+    textAlign: 'center',
+    color: 'rgb(255,255,0)',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+
+  inputContainer: {
+    position: 'relative',
+    backgroundColor: '#ffffff',
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5
+  },
+
+  reset: {
+    position: 'absolute',
+    right: 10,
+    top: 20
+  },
+
+  resetText: {
+    fontSize: 25,
+    color: 'rgb(0, 0, 255)'
   },
 
   inputField: {
-    flexGrow: 1,
-    flexBasis: 75,
-    padding: 10,
-    // width: WIDTH*.8,
-    height: 50,
-    backgroundColor: '#ffffff'
+    fontSize: 30,
+    width: WIDTH * 0.95,
+    padding: 10
   },
 
   text: {
