@@ -1,6 +1,8 @@
 ### Detox Test App
 
+#### installation
 
+Follow detox's tutorial [here](https://github.com/wix/Detox/blob/master/docs/Introduction.GettingStarted.md)
 
 #### iOS
 - Full support for all built in simulators.
