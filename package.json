@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "detox:build": "detox build ios.sim.debug",
-    "detox:run": "yarn env:default && detox test ios.sim.debug -n 'iPhone X'",
+    "detox:run": "yarn env:default && detox test -c ios.sim.debug -n 'iPhone X'",
     "ios:7": "yarn detox:run -n 'iPhone 7'",
     "ios:X": "yarn detox:run -n 'iPhone X'",
     "detox:multi": "yarn ios:7 & yarn ios:X",
