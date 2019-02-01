@@ -24,7 +24,7 @@ type Props = {
 
 const { width: WIDTH } = Dimensions.get('screen');
 
-const mockApi = () => new Promise((resolve: any) => setTimeout(resolve, 2500));
+const mockApi = () => new Promise((resolve: any) => setTimeout(resolve, 25000));
 
 type PromiseInputType = Promise<any>;
 type PromiseReturnType = { promise: any; cancel: () => void };
@@ -105,7 +105,7 @@ class Buttons extends React.PureComponent<Props> {
             </View>
           </React.Fragment>
         ))}
-        {!isRequesting ? (
+        {!isRequesting && (
           <TouchableHighlight
             testID={'LoginButton'}
             onPress={this.handleLogin}
@@ -116,7 +116,8 @@ class Buttons extends React.PureComponent<Props> {
               {isLoggedIn ? 'Sign out' : 'Login'}
             </Text>
           </TouchableHighlight>
-        ) : (
+        )}
+        {isRequesting && (
           <View testID={'Loader'} style={styles.loader}>
             <ActivityIndicator size="large" color="#fffff" />
           </View>
@@ -134,6 +135,8 @@ const styles = StyleSheet.create({
   },
 
   loader: {
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 100,
     height: 100
   },
