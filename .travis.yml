@@ -3,27 +3,27 @@ osx_image: xcode9.4
 
 branches:
   only:
-  - master
+    - master
 
 env:
   global:
-  - NODE_VERSION=stable
+    - NODE_VERSION=stable
 
 install:
-- brew tap wix/brew
-- brew install applesimutils
-- curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-- export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-- nvm install $NODE_VERSION
-- nvm use $NODE_VERSION
+  - brew install yarn
+  - brew tap wix/brew
+  - brew install applesimutils
+  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+  - export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  - nvm install $NODE_VERSION
+  - nvm use $NODE_VERSION
+  - npm install -g detox-cli >/dev/null 2>&1
+  - npm -g install react-native-cli
+  - yarn install
 
-- npm -g install react-native-cli
-
-cache:
-  directories:
-    - $(npm config get prefix)/bin/detox-cli
 before_script:
-- npm -g install detox-cli
+  - travis_wait yarn run build:release:ios
+
 script:
-- detox build -c ios.sim.release
-- detox test -c ios.sim.release
+  - detox build -c ios.sim.release
+  - detox test -c ios.sim.release
