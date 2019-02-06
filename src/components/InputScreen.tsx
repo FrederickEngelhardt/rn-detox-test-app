@@ -24,7 +24,7 @@ type Props = {
 
 const { width: WIDTH } = Dimensions.get('screen');
 
-const mockApi = () => new Promise((resolve: any) => setTimeout(resolve, 25000));
+const mockApi = () => new Promise((resolve: any) => setTimeout(resolve, 2500));
 
 type PromiseInputType = Promise<any>;
 type PromiseReturnType = { promise: any; cancel: () => void };

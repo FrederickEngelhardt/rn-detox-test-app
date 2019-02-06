@@ -18,11 +18,12 @@ install:
 - nvm use $NODE_VERSION
 
 - npm -g install react-native-cli
-- npm -g install detox-cli
 
 cache:
   directories:
     - $(npm config get prefix)/bin/detox-cli
+before_script:
+- npm -g install detox-cli
 script:
-- npx detox-cli build -c ios.sim.release
-- npx detox-cli test -c ios.sim.release
+- detox build -c ios.sim.release
+- detox test -c ios.sim.release
