@@ -10,6 +10,7 @@ env:
     - NODE_VERSION=stable
 
 install:
+  - brew update
   - brew install yarn
   - brew tap wix/brew
   - brew install applesimutils
@@ -22,8 +23,7 @@ install:
   - yarn install
 
 before_script:
-  - travis_wait yarn run build:release:ios
+  - travis_wait detox build -c ios.sim.release
 
 script:
-  - detox build -c ios.sim.release
   - detox test -c ios.sim.release
